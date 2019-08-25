@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import radar
 
 # Начальное время выполнения программы
-tic = time.clock()
+tic = time.perf_counter()
 
 # Исходные данные
 
@@ -87,7 +87,7 @@ distances = radar.zone_distances(max_dist, n_y_pr, n_y_per, d_y, f,
 
 # Высоты зоны обнаружения
 heights = radar.heights_of_target(eps, distances)
-# Высоты, на которых находится воздушный объект
+# Высоты, на которых находится воздушный объект, км
 heights_const = [5, 10, 15]
 # Дальности до изовысотных линий
 distances_to_lines = radar.distances_to_height_const(eps, heights_const)
@@ -133,4 +133,4 @@ with open('zone.txt', 'w') as f_out:
         f_out.write("{:.2f}{:20.6f}".format(eps[i], distances[i]) + '\n')
 
 # Время выполнения программы, с
-toc = time.clock() - tic
+toc = time.perf_counter() - tic

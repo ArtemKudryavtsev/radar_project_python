@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import time
 
 # Начальное время выполнения программы
-tic = time.clock()
+tic = time.perf_counter()
 
 # Исходные данные
 
@@ -52,4 +52,4 @@ delta_beta = radar.delta_dn(beta, dn_beta)
 print(delta_beta)
 
 # Время выполнения программы, с
-toc = time.clock() - tic
+toc = time.perf_counter() - tic

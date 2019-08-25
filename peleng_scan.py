@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import time
 
 # Начальное время выполнения программы
-tic = time.clock()
+tic = time.perf_counter()
 
 # Количество строк АР
 n_y = 30
@@ -48,4 +48,4 @@ plt.grid()
 plt.show()
 
 # Время выполнения программы, с
-toc = time.clock() - tic
+toc = time.perf_counter() - tic

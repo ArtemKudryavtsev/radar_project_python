@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import radar
 
 # Начальное время выполнения программы
-tic = time.clock()
+tic = time.perf_counter()
 
 # Пороговое отношение сигнал/шум, дБ
 snr_porog = 14
@@ -24,7 +24,7 @@ distances, eps = radar.zone_distances_and_angles_from_file(filename)
 
 # Высоты зоны обнаружения
 heights = radar.heights_of_target(eps, distances)
-# Высоты, на которых находится воздушный объект
+# Высоты, на которых находится воздушный объект, км
 heights_const = [5, 10, 15]
 # Дальности до изовысотных линий
 distances_to_lines = radar.distances_to_height_const(eps, heights_const)
@@ -106,4 +106,4 @@ plt.grid(True)
 plt.show()
     
 # Время выполнения программы, с
-toc = time.clock() - tic
+toc = time.perf_counter() - tic

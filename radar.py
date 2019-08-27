@@ -21,11 +21,11 @@ sig = 1e-3
 # Относительная диэлектрическая проницаемость
 e_pr = 10
 
-def dn_beta(n_x, d_x, f, beta, beta_0, dn_element, weight=False):
+def dn_beta(n_x, d_x, freq, beta, beta_0, dn_element, weight=False):
     """Диаграмма направленности в азимутальной плоскости.
     n_x - количество столбцов антенной решетки.
     d_x - расстояние между столбцами АР, м.
-    f - частота, Гц.
+    freq - частота, Гц.
     beta - массив азимутов цели, угл. градус.
     beta_0 - угол, на который установлен луч АР, угл. градус.
     dn_element - диаграмма направленности элемента АР (необходимо передать в
@@ -38,7 +38,7 @@ def dn_beta(n_x, d_x, f, beta, beta_0, dn_element, weight=False):
     lambda n: (0.54 + 0.46 * 
     np.cos(1.6 * np.pi * (n - 0.5 * (n_x + 1)) / (n_x - 1)))."""
     # Длина волны
-    lam = c / f
+    lam = c / freq
     # Волновое число
     k = 2 * np.pi / lam
     # Диаграмма направленности по азимуту
@@ -90,12 +90,12 @@ def k_sh_coeff(eps_target, lam, h_sher):
     return np.exp(-2 * 
                   (2 * np.pi / lam * h_sher * np.sin(eps_target * rad))**2)
 
-def dn_eps(n_y, d_y, f, eps_a, eps, eps_lou, dn_element, h_gc=0, refraction=False, 
-           h_sher=0, phase_distr=False):
+def dn_eps(n_y, d_y, freq, eps_a, eps, eps_lou, dn_element, h_gc=0, 
+           refraction=False, h_sher=0, phase_distr=False):
     """Диаграмма направленности в угломестной плоскости.
     n_y - количество строк антенной решетки.
     d_y - расстояние между строками АР, м.
-    f - частота, Гц.
+    freq - частота, Гц.
     eps_a - угол наклона АР, угл. градус.
     eps - массив углов места цели, угл. градус.
     eps_lou - угол, на который настроен пространственный фильтр, угл. градус.
@@ -110,7 +110,7 @@ def dn_eps(n_y, d_y, f, eps_a, eps, eps_lou, dn_element, h_gc=0, refraction=Fals
     дециметровом диапазоне длин волн, в метровом диапазоне отсутствует).
     phase_distr - фазовое распределение (по умолчанию отсутствует)."""
     # Длина волны
-    lam = c / f
+    lam = c / freq
     # Волновое число
     k = 2 * np.pi / lam
     # Относительная комплексная диэлектрическая проницаемость
@@ -202,12 +202,12 @@ def delta_dn(angles, dn):
             
     return angles[index_minus_3_db] * 2
 
-def filters_response(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, h_gc=0, 
+def filters_response(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element, h_gc=0, 
                      refraction=False, h_sher=0):
     """Огибающие откликов пространственных фильтров.
     n_y - количество строк антенной решетки.
     d_y - расстояние между строками АР, м.
-    f - частота, Гц.
+    freq - частота, Гц.
     eps_a - угол наклона АР, угл. градус.
     eps - массив углов места цели, угл. градус.
     eps_beams - углы, на которые настроены пространственные фильтры, 
@@ -222,7 +222,7 @@ def filters_response(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, h_gc=0,
     h_sher - глубина шероховатости, м (шероховатость присутствует в 
     дециметровом диапазоне длин волн, в метровом диапазоне отсутствует)."""
     # Длина волны
-    lam = c / f
+    lam = c / freq
     # Волновое число
     k = 2 * np.pi / lam
     # Относительная комплексная диэлектрическая проницаемость
@@ -282,12 +282,12 @@ def filters_response(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, h_gc=0,
         index_target += 1
     return fr
 
-def peleng_scan(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, h_gc = 0, 
+def peleng_scan(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element, h_gc = 0, 
                 refraction=False, h_sher=0):
     """Пеленгационная характеристика методом сканирования.
     n_y - количество строк антенной решетки.
     d_y - расстояние между строками АР, м.
-    f - частота, Гц.
+    freq - частота, Гц.
     eps_a - угол наклона АР, угл. градус.
     eps - массив углов места цели, угл. градус.
     eps_beams - углы, на которые настроены пространственные фильтры, 
@@ -307,7 +307,7 @@ def peleng_scan(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, h_gc = 0,
     eps_real = np.zeros(len(eps), dtype=float)
     
     # Огибающие откликов пространственных фильтров
-    fr = filters_response(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, 
+    fr = filters_response(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element, 
                                h_gc, refraction, h_sher)
     
     for i in np.arange(len(eps), dtype=int):
@@ -722,12 +722,12 @@ def heights_of_target(eps, distances, curvature=False):
             heights[i] = distances[i] * np.sin(eps[i] * rad)    
     return heights
 
-def provodka(n_y, d_y, f, eps_a, h_0, eps, eps_beams, dn_element, h_gc=0, 
+def provodka(n_y, d_y, freq, eps_a, h_0, eps, eps_beams, dn_element, h_gc=0, 
              refraction=False, h_sher=0):
     """Пеленгационная характеристика методом сканирования.
     n_y - количество строк антенной решетки.
     d_y - расстояние между строками АР, м.
-    f - частота, Гц.
+    freq - частота, Гц.
     eps_a - угол наклона АР, угл. градус.
     h_0 - высота полета цели, км.
     eps - массив углов места цели, угл. градус.
@@ -743,7 +743,7 @@ def provodka(n_y, d_y, f, eps_a, h_0, eps, eps_beams, dn_element, h_gc=0,
     h_sher - глубина шероховатости, м (шероховатость присутствует в 
     дециметровом диапазоне длин волн, в метровом диапазоне отсутствует)."""
     # Измеренный угол места цели
-    eps_real = peleng_scan(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, 
+    eps_real = peleng_scan(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element, 
                            h_gc, refraction, h_sher)
     
     # Дальности до теоретической цели на высоте h_0
@@ -757,7 +757,7 @@ def provodka(n_y, d_y, f, eps_a, h_0, eps, eps_beams, dn_element, h_gc=0,
         
     return distances, height
 
-def max_distance(p_sr, t_obl, g_pr, g_per, epr, f, t_celsius, noise_factor, 
+def max_distance(p_sr, t_obl, g_pr, g_per, epr, freq, t_celsius, noise_factor, 
                  snr_porog, poteri):
     """Расчет максимальной дальности обнаружения.
     p_sr - средняя мощность, Вт.
@@ -765,13 +765,13 @@ def max_distance(p_sr, t_obl, g_pr, g_per, epr, f, t_celsius, noise_factor,
     g_pr - коэффициент усиления приёмной антенны, дБ.
     g_per - коэффициент усиления передающей антенны, дБ.
     epr - ЭПР цели, м2.
-    f - частота, Гц.
+    freq - частота, Гц.
     t_celsius - температура в градусах цельсия .
     noise_factor - шум-фактор, дБ.
     snr_porog - пороговое ОСШ, дБ.
     poteri - потери, дБ."""
     # Длина волны
-    lam = c / f
+    lam = c / freq
     # Постоянная Больцмана
     k_bolc = 1.38e-23
     # Температура в кельвинах
@@ -790,9 +790,9 @@ def zone_distances_and_angles_from_file(filename):
     Файл должен иметь два столбца, первый из которых - угол места, второй
     столбец - дальность.
     filename - имя файла."""
-    with open(filename, 'r') as f:
+    with open(filename, 'r') as freq:
         distances_angles = list()
-        for line in f:
+        for line in freq:
             a, b = line.split()
             distances_angles.append(float(a))
             distances_angles.append(float(b))
@@ -822,7 +822,7 @@ def zone_distances_and_angles_from_file(filename):
     
     return distances, eps
           
-def zone_distances(max_dist, n_y_pr, n_y_per, d_y, f, eps_a, eps, 
+def zone_distances(max_dist, n_y_pr, n_y_per, d_y, freq, eps_a, eps, 
                    eps_beams_pr, eps_lou_per, dn_element, h_gc=0, 
                    refraction=False, h_sher=0, phase_distr_per=False):
     """Расчет дальностей зоны обнаружения.
@@ -830,7 +830,7 @@ def zone_distances(max_dist, n_y_pr, n_y_per, d_y, f, eps_a, eps,
     n_y_pr - количество строк приемной АР.
     n_y_per - количество строк передающей АР.
     d_y - расстояние между элементами АР, м.
-    f - частота, Гц.
+    freq - частота, Гц.
     eps_a - угол наклона АР, угл. градус.
     eps - угол места цели, угл. градус.
     eps_beams_pr - углы ЛОУ приемной АР, угл. градус.
@@ -848,7 +848,7 @@ def zone_distances(max_dist, n_y_pr, n_y_per, d_y, f, eps_a, eps,
     phase_distr_per - наличие фазового распределения передающей АР (по 
     умолчанию отсутствует)."""
     # Огибающие откликов системы пространственных фильтров для приемной АР
-    fr_eps_pr = filters_response(n_y_pr, d_y, f, eps_a, eps, eps_beams_pr, 
+    fr_eps_pr = filters_response(n_y_pr, d_y, freq, eps_a, eps, eps_beams_pr, 
                                     dn_element, h_gc, refraction, h_sher)
     # Приемная ДН (огибающая максимумов откликов системы пространственных
     # фильтров приемной АР)
@@ -857,7 +857,7 @@ def zone_distances(max_dist, n_y_pr, n_y_per, d_y, f, eps_a, eps,
         dn_eps_pr[i] = np.max(fr_eps_pr[:,i])
       
     # Передающая ДН
-    dn_eps_per = dn_eps(n_y_per, d_y, f, eps_a, eps, eps_lou_per, dn_element, 
+    dn_eps_per = dn_eps(n_y_per, d_y, freq, eps_a, eps, eps_lou_per, dn_element, 
                         h_gc, refraction, h_sher, phase_distr_per)
     
     # Приемо-передающая ДН

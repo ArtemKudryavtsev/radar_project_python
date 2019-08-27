@@ -14,7 +14,7 @@ n_x = 30
 # Расстояние между столбцами АР, м
 d_x = 0.1
 # Частота, Гц
-f = 1000e6
+freq = 1000e6
 # Начальный угол сканирования, угл. градус
 beta_start = -30.0
 # Шаг сканирования, угл. градус
@@ -29,7 +29,7 @@ beta_0 = 0.0
 dn_element = lambda angle: np.cos(angle)
 
 # ДН по азимуту
-dn_beta = radar.dn_beta(n_x, d_x, f, beta, beta_0, dn_element)
+dn_beta = radar.dn_beta(n_x, d_x, freq, beta, beta_0, dn_element)
 
 # График ДН в азимутальной плоскости
 plt.figure()

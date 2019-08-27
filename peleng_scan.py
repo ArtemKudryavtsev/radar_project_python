@@ -12,7 +12,7 @@ n_y = 30
 # Расстояние между строками АР, м
 d_y = 0.1
 # Частота, Гц
-f = 1000e6
+freq = 1000e6
 # Угол наклона антенной решётки, угл. градус
 eps_a = 10
 # Высота подъёма геометрического центра антенны, м
@@ -32,10 +32,10 @@ dn_element = lambda angle: np.cos(angle)
 # Наличие отражений от земной поверхности
 refraction = True
 # Глубина шероховатости, м (в дециметровом диапазоне присутствует)
-h_sher = 1.5 * radar.c / f
+h_sher = 1.5 * radar.c / freq
 
 # Истинные углы места
-eps_real = radar.peleng_scan(n_y, d_y, f, eps_a, eps, eps_beams, dn_element, 
+eps_real = radar.peleng_scan(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element, 
                              h_gc, refraction=refraction, h_sher=h_sher)
 
 # График пеленгационной характеристики методом сканирования

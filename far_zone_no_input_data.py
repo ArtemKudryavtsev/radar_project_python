@@ -16,7 +16,7 @@ n_y_per = 10
 # Расстояние между элементами по y, м
 d_y = 0.1
 # Частота, Гц
-f = 1000e6
+freq = 1000e6
 # Угол наклона антенной решётки, угл. градус
 eps_a = 10
 # Высота подъёма геометрического центра антенны, м
@@ -26,7 +26,7 @@ dn_element = lambda angle: np.cos(angle)
 # Наличие отражений от земной поверхности
 refraction = True
 # Глубина шероховатости, м (в дециметровом диапазоне присутствует)
-h_sher = 1.5 * radar.c / f
+h_sher = 1.5 * radar.c / freq
 # Лучи ЛОУ приемной АР, угл. градус
 eps_beams_pr = np.arange(0.00, 31.0, 1.0, dtype=float)
 # Угол, на который настроен пространственный фильтр передающей АР, угл. градус
@@ -75,11 +75,11 @@ snr_porog = 14
 poteri = 5
 
 # Максимальная дальность, км
-max_dist = radar.max_distance(p_sr, t_obl, g_pr, g_per, epr, f, t_celsius, 
+max_dist = radar.max_distance(p_sr, t_obl, g_pr, g_per, epr, freq, t_celsius, 
                               noise_factor, snr_porog, poteri)
 
 # Дальности зоны обнаружения
-distances = radar.zone_distances(max_dist, n_y_pr, n_y_per, d_y, f, 
+distances = radar.zone_distances(max_dist, n_y_pr, n_y_per, d_y, freq, 
                                  eps_a, eps, eps_beams_pr, eps_lou_per, 
                                  dn_element, h_gc, refraction=refraction, 
                                  h_sher=h_sher, 

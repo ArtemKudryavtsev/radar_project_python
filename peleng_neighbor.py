@@ -14,7 +14,7 @@ n_y = 30
 # Расстояние между строками АР
 d_y = 0.1
 # Частота, Гц
-f = 1000e6
+freq = 1000e6
 # Угол наклона антенной решётки, угл. градус
 eps_a = 10
 # Высота подъёма геометрического центра антенны, м
@@ -22,7 +22,7 @@ h_gc = 10
 # Наличие отражений от земной поверхности
 refraction = True
 # Глубина шероховатости, м (в дециметровом диапазоне присутствует)
-h_sher = 1.5 * radar.c / f
+h_sher = 1.5 * radar.c / freq
 # Количество лучей ЛОУ
 n_beams = 16
 # Массив углов ЛОУ (лучеобразующего устройства), угл. градус
@@ -40,7 +40,7 @@ eps_finish = 10.00
 eps = np.arange(eps_begin, eps_finish + eps_step, eps_step, dtype=float)
 
 # Огибающие откликов системы пространственных фильтров
-fr = radar.filters_response(n_y, d_y, f, eps_a, eps, eps_beams, dn_element,
+fr = radar.filters_response(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element,
                             h_gc, refraction=refraction, h_sher=h_sher)
     
 results_path = 'peleng_neighbor_results\\'

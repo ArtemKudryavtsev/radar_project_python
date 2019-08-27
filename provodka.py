@@ -14,7 +14,7 @@ n_y = 30
 # Расстояние между строками АР
 d_y = 0.1
 # Частота, Гц
-f = 1000e6
+freq = 1000e6
 # Угол наклона антенной решётки, угл. градус
 eps_a = 10
 # Диаграмма направленности элемента (косинус)
@@ -36,10 +36,10 @@ eps_beams = eps
 # Наличие отражений от земной поверхности
 refraction = True
 # Глубина шероховатости, м (в дециметровом диапазоне присутствует)
-h_sher = 1.5 * radar.c / f
+h_sher = 1.5 * radar.c / freq
 
 # Дальность до цели и высоты цели
-distance, height = radar.provodka(n_y, d_y, f, eps_a, h_0, eps, eps_beams, 
+distance, height = radar.provodka(n_y, d_y, freq, eps_a, h_0, eps, eps_beams, 
                                   dn_element, h_gc, refraction=refraction, 
                                   h_sher=h_sher)
 

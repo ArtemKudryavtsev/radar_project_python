@@ -14,7 +14,7 @@ n_y = 30
 # Расстояние между строками АР, м
 d_y = 0.1
 # Частота, Гц
-f = 1000e6
+freq = 1000e6
 # Угол наклона антенной решётки, угл. градус
 eps_a = 10
 # Количество лучей ЛОУ
@@ -34,7 +34,7 @@ eps_finish = 10.00
 eps = np.arange(eps_begin, eps_finish + eps_step, eps_step, dtype=float)
 
 # Огибающие откликов системы пространственных фильтров
-fr = radar.filters_response(n_y, d_y, f, eps_a, eps, eps_beams, dn_element)
+fr = radar.filters_response(n_y, d_y, freq, eps_a, eps, eps_beams, dn_element)
 
 # График огибающих откликов пространственных фильтров
 dn_plot = True
